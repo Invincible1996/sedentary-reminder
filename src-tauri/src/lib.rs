@@ -1,3 +1,5 @@
+#![allow(unexpected_cfgs)]
+
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::TrayIconBuilder,

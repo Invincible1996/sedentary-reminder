@@ -1,4 +1,4 @@
-import { AppTheme, Language, ReminderType, Settings } from "../types";
+import { AppTheme, Language, ReminderType, Settings, PopupType } from "../types";
 import { I18N_TRANSLATIONS } from "../lib/i18n";
 
 interface Props {
@@ -20,6 +20,15 @@ const THEME_OPTIONS: { id: AppTheme; key: string }[] = [
   { id: "cyber", key: "themeCyber" },
   { id: "ocean", key: "themeOcean" },
   { id: "lava", key: "themeLava" },
+];
+
+const POPUP_OPTIONS: { id: PopupType; key: string }[] = [
+  { id: "fullscreen", key: "popupTypeFullscreen" },
+  { id: "center", key: "popupTypeCenter" },
+  { id: "topLeft", key: "popupTypeTopLeft" },
+  { id: "topRight", key: "popupTypeTopRight" },
+  { id: "bottomLeft", key: "popupTypeBottomLeft" },
+  { id: "bottomRight", key: "popupTypeBottomRight" },
 ];
 
 function breakLabel(seconds: number, lang: Language): string {
@@ -164,6 +173,26 @@ export default function SettingsPanel({ settings, onChange, onClose }: Props) {
             >
               English
             </button>
+          </div>
+        </div>
+
+        {/* 弹窗方式选择行 */}
+        <div className="settings-row" style={{ flexDirection: "column", alignItems: "stretch", gap: "8px" }}>
+          <div>
+            <div className="settings-label">{t.popupTypeLabel}</div>
+            <div className="settings-hint">{t.popupTypeHint}</div>
+          </div>
+          <div className="interval-options" style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+            {POPUP_OPTIONS.map((opt) => (
+              <button
+                key={opt.id}
+                className={`chip${(settings.popupType || "fullscreen") === opt.id ? " active" : ""}`}
+                onClick={() => onChange({ ...settings, popupType: opt.id })}
+                style={{ padding: "6px 10px", fontSize: "12.5px", whiteSpace: "nowrap" }}
+              >
+                {t[opt.key]}
+              </button>
+            ))}
           </div>
         </div>
 

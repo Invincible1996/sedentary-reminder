@@ -102,7 +102,7 @@ function App() {
         const force = settingsRef.current[activeReminder].forceMode;
         const endAt = Date.now() + settingsRef.current.breakSeconds * 1000;
         const mi = randomCopyIndex(activeReminder, settingsRef.current.lang);
-        await openOverlays(activeReminder, force, endAt, mi, settingsRef.current.lang);
+        await openOverlays(activeReminder, force, endAt, mi, settingsRef.current.lang, settingsRef.current.popupType || "fullscreen");
       } else if (overlayForRef.current !== null) {
         overlayForRef.current = null;
         await closeOverlays();

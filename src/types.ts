@@ -1,6 +1,7 @@
 export type ReminderType = "exercise" | "water";
 export type Language = "zh" | "en";
 export type AppTheme = "dark" | "light" | "forest" | "sakura" | "sunset" | "cyber" | "ocean" | "lava";
+export type PopupType = "fullscreen" | "center" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
 
 export interface ReminderConfig {
   enabled: boolean;
@@ -15,6 +16,7 @@ export interface Settings {
   soundEnabled: boolean;
   autoStart: boolean;
   muteInFullscreen?: boolean;
+  popupType?: PopupType;
   /** 每次提醒的休息时长(秒),全屏倒计时按此显示。 */
   breakSeconds: number;
   theme?: AppTheme;

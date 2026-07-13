@@ -22,12 +22,14 @@ fn update_tray_status(
 }
 
 #[tauri::command]
-fn setup_overlay_window(app: tauri::AppHandle, label: String) -> Result<(), String> {
+fn setup_overlay_window(app: tauri::AppHandle, label: String, is_fullscreen: bool) -> Result<(), String> {
     if let Some(window) = app.get_webview_window(&label) {
-        // Force window to occupy the entire monitor in physical pixels
-        if let Ok(Some(monitor)) = window.current_monitor() {
-            let _ = window.set_position(tauri::Position::Physical(*monitor.position()));
-            let _ = window.set_size(tauri::Size::Physical(*monitor.size()));
+        if is_fullscreen {
+            // Force window to occupy the entire monitor in physical pixels
+            if let Ok(Some(monitor)) = window.current_monitor() {
+                let _ = window.set_position(tauri::Position::Physical(*monitor.position()));
+                let _ = window.set_size(tauri::Size::Physical(*monitor.size()));
+            }
         }
 
         #[cfg(target_os = "macos")]
@@ -49,6 +51,11 @@ fn setup_overlay_window(app: tauri::AppHandle, label: String) -> Result<(), Stri
                     
                     // Set window level to NSScreenSaverWindowLevel (value 2000)
                     let _: () = msg_send![ns_win, setLevel: 2000_isize];
+
+                    // Make transparent and clear background to avoid white corners
+                    let _: () = msg_send![ns_win, setOpaque: false];
+                    let clear: id = msg_send![objc::class!(NSColor), clearColor];
+                    let _: () = msg_send![ns_win, setBackgroundColor: clear];
                 }
             }
         }

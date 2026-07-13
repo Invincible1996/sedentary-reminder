@@ -1,5 +1,5 @@
 import { emit } from "@tauri-apps/api/event";
-import { Language, ReminderType } from "../types";
+import { Language, ReminderType, PopupType } from "../types";
 import ReminderOverlay from "./ReminderOverlay";
 
 /** 遮罩窗口专用根组件:从 URL 读取参数,渲染全屏提醒。 */
@@ -13,6 +13,7 @@ export default function OverlayWindow() {
   const endAt = Number(params.get("endAt")) || Date.now();
   const messageIndex = Number(params.get("mi")) || 0;
   const lang = (params.get("lang") as Language) || "zh";
+  const popupType = (params.get("pt") as PopupType) || "fullscreen";
 
   return (
     <ReminderOverlay
@@ -21,6 +22,7 @@ export default function OverlayWindow() {
       endAt={endAt}
       messageIndex={messageIndex}
       lang={lang}
+      popupType={popupType}
       onComplete={() => void emit(OVERLAY_DONE)}
       onSnooze={(minutes) => void emit(OVERLAY_SNOOZE, minutes)}
     />

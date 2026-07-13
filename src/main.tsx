@@ -6,6 +6,9 @@ import OverlayWindow from "./components/OverlayWindow";
 
 // 同一前端两种角色:带 ?overlay=1 的窗口渲染全屏遮罩,否则渲染主界面。
 const isOverlay = new URLSearchParams(window.location.search).has("overlay");
+if (isOverlay) {
+  document.documentElement.classList.add("overlay-window");
+}
 
 // 在最开始读取主题并应用到 html 元素上，防止闪烁
 try {

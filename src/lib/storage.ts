@@ -11,6 +11,7 @@ export const DEFAULT_SETTINGS: Settings = {
   soundEnabled: true,
   autoStart: true,
   muteInFullscreen: true,
+  popupType: "fullscreen",
   breakSeconds: 300,
   theme: "dark",
   lang: systemLang,

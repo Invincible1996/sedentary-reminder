@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { Language, ReminderType } from "../types";
+import { Language, ReminderType, PopupType } from "../types";
 import {
   copyAt,
 } from "../lib/content";
@@ -16,6 +16,7 @@ interface Props {
   /** 文案池下标,由主窗口随机选定并下发,保证多屏一致。 */
   messageIndex: number;
   lang: Language;
+  popupType?: PopupType;
   onComplete: () => void;
   onSnooze: (minutes: number) => void;
 }
@@ -35,6 +36,7 @@ export default function ReminderOverlay({
   endAt,
   messageIndex,
   lang,
+  popupType = "fullscreen",
   onComplete,
   onSnooze,
 }: Props) {
@@ -80,7 +82,7 @@ export default function ReminderOverlay({
     : t.restTimeRemaining;
 
   return (
-    <div className="overlay overlay-fullscreen">
+    <div className={`overlay ${popupType === "fullscreen" ? "overlay-fullscreen" : "overlay-compact"}`}>
       <div className="overlay-card" style={style}>
         <div className="overlay-icon">
           {type === "exercise" ? (

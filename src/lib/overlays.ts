@@ -4,10 +4,8 @@ import {
   availableMonitors,
   primaryMonitor,
   type Monitor,
-  LogicalPosition,
-  LogicalSize,
 } from "@tauri-apps/api/window";
-import { Language, ReminderType } from "../types";
+import { Language, ReminderType, PopupType } from "../types";
 
 const PREFIX = "sr-overlay-";
 
@@ -25,7 +23,8 @@ export async function openOverlays(
   force: boolean,
   endAt: number,
   messageIndex: number,
-  lang: Language
+  lang: Language,
+  popupType: PopupType = "fullscreen"
 ): Promise<void> {
   try {
     let monitors: Monitor[] = [];
@@ -49,11 +48,11 @@ export async function openOverlays(
 
     await Promise.all(
       targets.map((m, i) =>
-        createOne(`${PREFIX}${runId}-${i}`, m, type, force, endAt, messageIndex, lang, i === 0)
+        createOne(`${PREFIX}${runId}-${i}`, m, type, force, endAt, messageIndex, lang, popupType, i === 0)
       )
     );
-  } catch {
-    // ignore(例如非 Tauri 的浏览器开发环境)
+  } catch (err) {
+    console.error("Failed to open overlays:", err);
   }
 }
 
@@ -65,12 +64,60 @@ async function createOne(
   endAt: number,
   messageIndex: number,
   lang: Language,
+  popupType: PopupType,
   focus: boolean
 ): Promise<void> {
-  const url = `index.html?overlay=1&type=${type}&force=${force ? 1 : 0}&endAt=${endAt}&mi=${messageIndex}&lang=${lang}`;
+  const url = `index.html?overlay=1&type=${type}&force=${force ? 1 : 0}&endAt=${endAt}&mi=${messageIndex}&lang=${lang}&pt=${popupType}`;
+
+  let x: number | undefined;
+  let y: number | undefined;
+  let w: number | undefined;
+  let h: number | undefined;
+
+  if (monitor) {
+    // Tauri 按「各显示器自身物理像素」上报 position/size,混合 DPI 下
+    // 全局物理坐标会重叠。统一除以各自 scaleFactor 换算成逻辑点,
+    // 再用 Logical 单位定位,得到一致的跨屏布局。
+    const scale = monitor.scaleFactor || 1;
+    const mX = Math.round(monitor.position.x / scale);
+    const mY = Math.round(monitor.position.y / scale);
+    const mW = Math.round(monitor.size.width / scale);
+    const mH = Math.round(monitor.size.height / scale);
+
+    if (popupType === "fullscreen") {
+      x = mX;
+      y = mY;
+      w = mW;
+      h = mH;
+    } else {
+      // 小尺寸弹窗定位
+      w = 400;
+      h = 260;
+      x = mX + (mW - w) / 2;
+      y = mY + (mH - h) / 2;
+
+      if (popupType === "topLeft") {
+        x = mX + 24;
+        y = mY + 24;
+      } else if (popupType === "topRight") {
+        x = mX + mW - w - 24;
+        y = mY + 24;
+      } else if (popupType === "bottomLeft") {
+        x = mX + 24;
+        y = mY + mH - h - 40;
+      } else if (popupType === "bottomRight") {
+        x = mX + mW - w - 24;
+        y = mY + mH - h - 40; // 底部偏移 40px 以防遮挡 Dock/任务栏
+      }
+    }
+  }
 
   const win = new WebviewWindow(label, {
     url,
+    x,
+    y,
+    width: w,
+    height: h,
     decorations: false,
     alwaysOnTop: true,
     skipTaskbar: true,
@@ -79,53 +126,29 @@ async function createOne(
     minimizable: false,
     closable: false, // 禁止 Cmd+W 关闭;由主窗口统一销毁
     focus,
-    visible: false, // 先定位到目标显示器再显示,避免闪一下
-    shadow: false,
+    visible: true, // 立即显示
+    transparent: popupType !== "fullscreen",
+    shadow: false, // 禁用 OS 阴影以消除 macOS 的白边/白角
     title: "久坐提醒",
   });
   openLabels.add(label);
 
-  await new Promise<void>((resolve) => {
-    win.once("tauri://created", async () => {
-      try {
-        if (monitor) {
-          // Tauri 按「各显示器自身物理像素」上报 position/size,混合 DPI 下
-          // 全局物理坐标会重叠。统一除以各自 scaleFactor 换算成逻辑点,
-          // 再用 Logical 单位定位,得到一致的跨屏布局。
-          const scale = monitor.scaleFactor || 1;
-          await win.setPosition(
-            new LogicalPosition(
-              Math.round(monitor.position.x / scale),
-              Math.round(monitor.position.y / scale)
-            )
-          );
-          await win.setSize(
-            new LogicalSize(
-              Math.round(monitor.size.width / scale),
-              Math.round(monitor.size.height / scale)
-            )
-          );
-        }
-        await win.setAlwaysOnTop(true);
-        // macOS: 叠加在其他应用(含全屏应用)之上
-        await win.setVisibleOnAllWorkspaces(true);
-        await win.show();
-        if (focus) await win.setFocus();
-        try {
-          await invoke("setup_overlay_window", { label });
-        } catch {
-          // ignore
-        }
-      } catch {
-        // ignore
-      }
-      resolve();
-    });
-    win.once("tauri://error", () => {
-      openLabels.delete(label);
-      resolve();
-    });
-  });
+  try {
+    await win.setAlwaysOnTop(true);
+    // macOS: 叠加在其他应用(含全屏应用)之上
+    await win.setVisibleOnAllWorkspaces(true);
+    if (focus) await win.setFocus();
+    try {
+      await invoke("setup_overlay_window", { 
+        label, 
+        isFullscreen: popupType === "fullscreen" 
+      });
+    } catch {
+      // ignore
+    }
+  } catch (err) {
+    console.error("Failed to setup overlay window properties:", err);
+  }
 }
 
 /** 销毁全部遮罩窗口。 */

@@ -787,7 +787,7 @@ body::-webkit-scrollbar-thumb:hover {
   gap: 12px;
   padding: 32px 28px 24px;
   border-radius: 24px;
-  background: var(--bg-elev);
+  background: var(--bg);
   border: 1px solid var(--accent);
   box-shadow: var(--glow), 0 20px 60px rgba(0, 0, 0, 0.35);
   animation: pop 0.22s cubic-bezier(0.18, 0.9, 0.32, 1.25);
@@ -1129,6 +1129,73 @@ body::-webkit-scrollbar-thumb:hover {
   color: var(--text-dim);
   font-size: 14px;
   letter-spacing: 0.02em;
+}
+
+/* Compact (center/corner) reminder overlay */
+html.overlay-window,
+html.overlay-window body {
+  background: transparent !important;
+}
+
+.overlay-compact {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.overlay-compact .overlay-card {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  border-radius: 22px; /* 与 timer-card 一致的 22px 圆角 */
+  border: 1px solid var(--accent);
+  box-shadow: none;
+  padding: 20px 24px 16px;
+  gap: 8px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.overlay-compact .overlay-svg-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.overlay-compact .overlay-card h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.overlay-compact .overlay-card p {
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.overlay-compact .overlay-countdown {
+  font-size: 38px;
+}
+
+.overlay-compact .overlay-force-status {
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.overlay-compact .overlay-actions {
+  margin-top: auto;
+  width: 100%;
+  gap: 12px;
 }
 
 /* Settings panel */

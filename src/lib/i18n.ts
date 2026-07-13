@@ -45,6 +45,14 @@ export const I18N_TRANSLATIONS: Record<Language, any> = {
     // new settings: language
     languageLabel: "语言 (Language)",
     languageHint: "切换界面和提醒文案的语言",
+    popupTypeLabel: "提醒弹窗方式",
+    popupTypeHint: "选择提醒触发时的窗口大小与显示位置",
+    popupTypeFullscreen: "全屏置顶",
+    popupTypeCenter: "屏幕中间",
+    popupTypeTopLeft: "左上角弹窗",
+    popupTypeTopRight: "右上角弹窗",
+    popupTypeBottomLeft: "左下角弹窗",
+    popupTypeBottomRight: "右下角弹窗",
     minuteUnit: "分",
     secondUnit: "秒",
     // new settings: theme
@@ -117,6 +125,14 @@ export const I18N_TRANSLATIONS: Record<Language, any> = {
     // new settings: language
     languageLabel: "Language",
     languageHint: "Switch interface and message language",
+    popupTypeLabel: "Reminder Style",
+    popupTypeHint: "Choose window size and position when reminder triggers",
+    popupTypeFullscreen: "Fullscreen",
+    popupTypeCenter: "Center Modal",
+    popupTypeTopLeft: "Top Left",
+    popupTypeTopRight: "Top Right",
+    popupTypeBottomLeft: "Bottom Left",
+    popupTypeBottomRight: "Bottom Right",
     minuteUnit: "min",
     secondUnit: "sec",
     // new settings: theme

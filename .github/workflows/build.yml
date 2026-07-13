@@ -1,0 +1,91 @@
+name: Build
+
+# 触发条件:
+# - 推送到 main/master:验证构建并产出各平台安装包 artifact
+# - 推送 v* 标签:构建并自动创建 GitHub Release,附带各平台安装包
+# - PR:验证构建
+# - 手动触发
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            artifact: sedentary-reminder-macos
+          - os: windows-latest
+            artifact: sedentary-reminder-windows
+    runs-on: ${{ matrix.os }}
+    # Windows runner 上用 Git Bash,保证与 macOS 一致的 shell 语法
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven/setup-bun@v2
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build & collect bundles to outputs/
+        run: bash scripts/build.sh
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: outputs/*
+          if-no-files-found: error
+
+      - name: Summary
+        run: |
+          echo "## Bundles (${{ matrix.os }})" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -lh outputs/ >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  release:
+    name: Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Flatten installers
+        run: |
+          mkdir -p release-assets
+          find artifacts -type f \( -name '*.dmg' -o -name '*.msi' -o -name '*.exe' \) \
+            -exec cp {} release-assets/ \;
+          ls -lh release-assets/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          generate_release_notes: true

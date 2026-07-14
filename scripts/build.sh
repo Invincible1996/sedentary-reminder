@@ -12,29 +12,32 @@ OUTPUT_DIR="outputs"
 
 echo "==> 1/3 执行 tauri build..."
 if [ "$(uname)" = "Darwin" ]; then
-  echo "    [macOS] 检测到 Mac 系统，尝试配置 x86_64 & aarch64 混合编译..."
+  echo "    [macOS] 检测到 Mac 系统，尝试配置 x86_64 & aarch64 双架构独立分包编译..."
   rustup target add x86_64-apple-darwin aarch64-apple-darwin 2>/dev/null || true
   
-  if echo "fn main() {}" | rustc --target x86_64-apple-darwin - -o ./target_check 2>/dev/null; then
-    echo "    [macOS] 目标编译测试成功，执行 Universal 混合编译..."
+  has_aarch64=false
+  has_x86_64=false
+  
+  if echo "fn main() {}" | rustc --target aarch64-apple-darwin - -o ./target_check 2>/dev/null; then
+    has_aarch64=true
     rm -f ./target_check
-    bun run tauri build --target universal-apple-darwin
+  fi
+  if echo "fn main() {}" | rustc --target x86_64-apple-darwin - -o ./target_check 2>/dev/null; then
+    has_x86_64=true
+    rm -f ./target_check
+  fi
+  
+  if [ "$has_aarch64" = true ] && [ "$has_x86_64" = true ]; then
+    echo "    [macOS] 支持双架构，依次执行 aarch64 和 x86_64 独立编译..."
+    bun run tauri build --target aarch64-apple-darwin
+    bun run tauri build --target x86_64-apple-darwin
   else
-    echo "    ⚠️ 警告: 当前编译器不支持编译 x86_64-apple-darwin 目标链(可能当前使用的是 Homebrew 版单架构 rustc)。"
-    echo "    提示: 如需本地编译 Universal/Intel 包，请确保使用 rustup 并安装了相应架构的目标包。"
-    echo "    现在回退到当前架构进行普通编译..."
+    echo "    ⚠️ 警告: 当前环境不支持双架构编译，将回退到默认本地架构编译..."
     rm -f ./target_check 2>/dev/null || true
     bun run tauri build
   fi
 else
   bun run tauri build
-fi
-
-# 自动探测 Tauri 产物根目录
-if [ -d "src-tauri/target/universal-apple-darwin/release/bundle" ]; then
-  BUNDLE_DIR="src-tauri/target/universal-apple-darwin/release/bundle"
-else
-  BUNDLE_DIR="src-tauri/target/release/bundle"
 fi
 
 echo "==> 2/3 收集构建产物到 $OUTPUT_DIR/ ..."
@@ -43,11 +46,12 @@ mkdir -p "$OUTPUT_DIR"
 rm -f "$OUTPUT_DIR"/*.dmg "$OUTPUT_DIR"/*.msi "$OUTPUT_DIR"/*.exe 2>/dev/null || true
 
 count=0
-# 依次尝试各平台的产物目录,不存在的会被跳过
+# 依次检索多平台和多架构下的产物目录，不支持的目录会自动跳过
 for src in \
-  "$BUNDLE_DIR"/dmg/*.dmg \
-  "$BUNDLE_DIR"/msi/*.msi \
-  "$BUNDLE_DIR"/nsis/*.exe; do
+  src-tauri/target/release/bundle/dmg/*.dmg \
+  src-tauri/target/*/release/bundle/dmg/*.dmg \
+  src-tauri/target/release/bundle/msi/*.msi \
+  src-tauri/target/release/bundle/nsis/*.exe; do
   [ -f "$src" ] || continue
   cp -f "$src" "$OUTPUT_DIR/"
   echo "    + $(basename "$src")"

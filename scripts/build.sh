@@ -16,13 +16,15 @@ if [ "$(uname)" = "Darwin" ]; then
   echo "    [macOS] 检测到 Mac 系统，尝试配置 x86_64 & aarch64 混合编译..."
   rustup target add x86_64-apple-darwin aarch64-apple-darwin 2>/dev/null || true
   
-  if echo "fn main() {}" | rustc --target x86_64-apple-darwin - -o /dev/null 2>/dev/null; then
+  if echo "fn main() {}" | rustc --target x86_64-apple-darwin - -o ./target_check 2>/dev/null; then
     echo "    [macOS] 目标编译测试成功，执行 Universal 混合编译..."
+    rm -f ./target_check
     bun run tauri build --target universal-apple-darwin
   else
     echo "    ⚠️ 警告: 当前编译器不支持编译 x86_64-apple-darwin 目标链(可能当前使用的是 Homebrew 版单架构 rustc)。"
     echo "    提示: 如需本地编译 Universal/Intel 包，请确保使用 rustup 并安装了相应架构的目标包。"
     echo "    现在回退到当前架构进行普通编译..."
+    rm -f ./target_check 2>/dev/null || true
     bun run tauri build
   fi
 else

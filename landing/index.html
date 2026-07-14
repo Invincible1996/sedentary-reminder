@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>久坐提醒 (Sedentary Reminder) - 您的桌面健康看护管家</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧘</text></svg>">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Neon Background Glows -->
+  <div class="neon-glow glow-1"></div>
+  <div class="neon-glow glow-2"></div>
+  <div class="neon-glow glow-3"></div>
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="logo">
+      <svg viewBox="0 0 100 100" class="logo-svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="100%" stop-color="#06b6d4" />
+          </linearGradient>
+          <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <rect x="2" y="2" width="96" height="96" rx="22" fill="#121620" />
+        <rect x="2" y="2" width="96" height="96" rx="22" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.3" />
+        <circle cx="50" cy="50" r="34" fill="none" stroke="url(#logoGrad)" stroke-width="5.5" stroke-dasharray="160 50" stroke-linecap="round" opacity="0.85" />
+        <circle cx="50" cy="30" r="5.5" fill="url(#logoGrad)" filter="url(#logoGlow)" />
+        <path d="M 50 36 C 50 48, 55 52, 45 68" fill="none" stroke="url(#logoGrad)" stroke-width="5" stroke-linecap="round" filter="url(#logoGlow)" />
+        <path d="M 32 38 C 42 36, 48 38, 68 28" fill="none" stroke="url(#logoGrad)" stroke-width="4.5" stroke-linecap="round" filter="url(#logoGlow)" />
+        <path d="M 50 50 C 58 56, 62 62, 60 72" fill="none" stroke="url(#logoGrad)" stroke-width="5" stroke-linecap="round" filter="url(#logoGlow)" />
+      </svg>
+      <span class="logo-text">Sedentary Reminder</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">功能特性</a>
+      <a href="#themes">主题预览</a>
+      <a href="#download" class="nav-btn">立即下载</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">🧘 v1.0.0 正式发布</div>
+      <h1>守护您的健康<br><span class="gradient-text">从每一次起身活动开始</span></h1>
+      <p class="hero-desc">
+        久坐提醒是一款融合了桌面磨砂玻璃美学、macOS 锁屏级 Mission Control 防绕过屏蔽、系统状态栏深度联动的健康看护软件。帮您在专注工作的同时，定时放松身体，补充水分。
+      </p>
+      
+      <!-- Smart Download Trigger -->
+      <div class="hero-actions">
+        <a href="#" id="primaryDownloadBtn" class="download-btn-main">
+          <span class="btn-icon" id="primaryBtnIcon">🍏</span>
+          <span class="btn-text">
+            <span class="btn-sub">下载最新版</span>
+            <span class="btn-title" id="primaryBtnTitle">macOS Intel/M芯片版本</span>
+          </span>
+        </a>
+        <a href="#download" class="download-btn-secondary">其他平台版本</a>
+      </div>
+      <p class="download-hint">安全无毒 · 开源轻量 · 极速启动</p>
+    </div>
+
+    <!-- Interactive App Mockup -->
+    <div class="hero-preview">
+      <div class="mockup-window dark-theme" id="appMockup">
+        <div class="mockup-header">
+          <div class="mockup-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="mockup-title">久坐提醒</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-stats">
+            <div class="mockup-stat">
+              <span class="stat-num" id="mockupExercise">12</span>
+              <span class="stat-label">今日起身</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="mockup-stat">
+              <span class="stat-num" id="mockupWater">8</span>
+              <span class="stat-label">今日喝水</span>
+            </div>
+          </div>
+          
+          <div class="mockup-control">
+            <button class="mockup-play-btn">⏸ 提醒进行中…</button>
+          </div>
+
+          <div class="mockup-timers">
+            <div class="mockup-card card-exercise">
+              <div class="card-circle-wrapper">
+                <svg viewBox="0 0 100 100" class="progress-svg">
+                  <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                  <circle class="circle-fill" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="62.8"></circle>
+                </svg>
+                <div class="circle-content">
+                  <span class="circle-time">30:00</span>
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="card-title">起身运动</span>
+                <span class="card-desc">建议 45 分钟 / 每次 3 分钟</span>
+              </div>
+            </div>
+
+            <div class="mockup-card card-water">
+              <div class="card-circle-wrapper">
+                <svg viewBox="0 0 100 100" class="progress-svg">
+                  <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                  <circle class="circle-fill" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="150.7"></circle>
+                </svg>
+                <div class="circle-content">
+                  <span class="circle-time">12:00</span>
+                </div>
+              </div>
+              <div class="card-info">
+                <span class="card-title">喝水休息</span>
+                <span class="card-desc">建议 30 分钟 / 每次 60 秒</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Theme Switcher overlay below mockup -->
+      <div class="theme-switcher-bar" id="themes">
+        <span>预览预设主题：</span>
+        <div class="theme-selector-chips">
+          <button class="theme-chip active" data-theme="dark" style="--chip-color: #00e676;">深邃</button>
+          <button class="theme-chip" data-theme="light" style="--chip-color: #6366f1;">极简</button>
+          <button class="theme-chip" data-theme="forest" style="--chip-color: #10b981;">森林</button>
+          <button class="theme-chip" data-theme="sakura" style="--chip-color: #ec4899;">樱花</button>
+          <button class="theme-chip" data-theme="sunset" style="--chip-color: #f59e0b;">落日</button>
+          <button class="theme-chip" data-theme="cyber" style="--chip-color: #f43f5e;">赛博</button>
+          <button class="theme-chip" data-theme="ocean" style="--chip-color: #3b82f6;">深海</button>
+          <button class="theme-chip" data-theme="lava" style="--chip-color: #ff4500;">熔岩</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="section-header">
+      <h2>核心特性</h2>
+      <p>为您精心打造的每一个细节，旨在让健康提醒无阻碍、无打扰。</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>macOS 锁屏级防绕过</h3>
+        <p>基于 Cocoa 底层接口，强制提升窗口层级至 2000（屏幕保护程序级），禁止虚拟桌面切换与 Exposé 缩小屏蔽，确保放松效果彻底执行。</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🖥️</div>
+        <h3>磨砂玻璃拟态 UI</h3>
+        <p>基于纯原生 Vanilla CSS，暗色霓虹径向微光融合高精细度 backdrop-filter 毛玻璃特效，完美适应任何桌面美学配色方案。</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🏃</div>
+        <h3>灵动 SVG 微动效</h3>
+        <p>动感拼接的起立运动人形骨骼动画、双层贝塞尔喝水波浪动画，使静态卡片瞬间活跃，充满生命力与交互手感。</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🖱️</div>
+        <h3>托盘菜单深度绑定</h3>
+        <p>支持左键直达原生控制菜单。首栏同步秒级倒计时提醒，无需打开界面即可快速跳过、重置、或挂起服务。</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>农历健康日历看板</h3>
+        <p>集成中国法定节假日（休/班）、二十四节气、干支生肖与传统节日。主界面小日历，帮助您合理规划作息工作。</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎚️</div>
+        <h3>高品质定制滑动条</h3>
+        <p>设置页全新设计了带刻度对齐的数学滑块，实时响应参数数值，以及 8 款动态外观主题自由选择，彻底告别原生态单调输入。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section id="download" class="download-section">
+    <div class="download-card">
+      <h2>准备好开启健康工作模式了吗？</h2>
+      <p>根据您的电脑芯片架构与系统，下载下方对应的离线安装包。安装简单，即点即用。</p>
+      
+      <div class="download-grid">
+        <!-- macOS M1/M2/M3 -->
+        <a href="../outputs/sedentary-reminder_1.0.0_aarch64.dmg" class="download-grid-item">
+          <span class="platform-icon">🍏</span>
+          <span class="platform-name">macOS (M1/M2/M3 芯片)</span>
+          <span class="platform-desc">适合 Apple Silicon 芯片 · 约 3.5 MB</span>
+        </a>
+
+        <!-- macOS Intel -->
+        <a href="../outputs/sedentary-reminder_1.0.0_x64.dmg" class="download-grid-item">
+          <span class="platform-icon">🖥️</span>
+          <span class="platform-name">macOS (Intel 芯片)</span>
+          <span class="platform-desc">适合 Intel 系列处理器 · 约 3.5 MB</span>
+        </a>
+
+        <!-- Windows Setup -->
+        <a href="../outputs/sedentary-reminder_1.0.0_x64-setup.exe" class="download-grid-item">
+          <span class="platform-icon">🪟</span>
+          <span class="platform-name">Windows (EXE 离线包)</span>
+          <span class="platform-desc">适合 Windows 10/11 · 约 2.1 MB</span>
+        </a>
+
+        <!-- Windows MSI -->
+        <a href="../outputs/sedentary-reminder_1.0.0_x64_en-US.msi" class="download-grid-item">
+          <span class="platform-icon">📦</span>
+          <span class="platform-name">Windows (MSI 安装包)</span>
+          <span class="platform-desc">适合企业静默分发部署 · 约 3.1 MB</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 Sedentary Reminder. 基于 Tauri v2 + React 倾力打造。</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

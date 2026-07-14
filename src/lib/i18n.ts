@@ -80,6 +80,10 @@ export const I18N_TRANSLATIONS: Record<Language, any> = {
     normalWorkday: "常规工作日",
     restDay: "法定节假日放假",
     makeUpWorkday: "法定调休上班",
+    resetStatsConfirm: "确定要重置今日的提醒次数统计吗？",
+    resetStatsLabel: "重置今日数据",
+    resetStatsHint: "清空今日已累计的起身与喝水数据",
+    resetStatsBtn: "立即重置",
   },
   en: {
     title: "Sedentary Reminder",
@@ -160,5 +164,9 @@ export const I18N_TRANSLATIONS: Record<Language, any> = {
     normalWorkday: "Normal Workday",
     restDay: "Public Holiday",
     makeUpWorkday: "Makeup Workday (Work)",
+    resetStatsConfirm: "Are you sure you want to reset today's reminder statistics?",
+    resetStatsLabel: "Reset Today's Data",
+    resetStatsHint: "Clear today's stood up and hydration counts",
+    resetStatsBtn: "Reset",
   },
 };

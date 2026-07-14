@@ -273,6 +273,12 @@ function App() {
 
   const t = I18N_TRANSLATIONS[settings.lang || "zh"];
 
+  const handleResetStats = useCallback(() => {
+    if (window.confirm(t.resetStatsConfirm)) {
+      setStats({ exercise: 0, water: 0, date: stats.date });
+    }
+  }, [t.resetStatsConfirm, stats.date]);
+
   const THEME_OPTIONS: { id: AppTheme; key: string }[] = [
     { id: "dark", key: "themeDark" },
     { id: "light", key: "themeLight" },
@@ -448,6 +454,7 @@ function App() {
           settings={settings}
           onChange={setSettings}
           onClose={() => setShowSettings(false)}
+          onResetStats={handleResetStats}
         />
       )}
 

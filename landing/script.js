@@ -11,18 +11,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (userAgent.indexOf("mac") !== -1) {
     // macOS
-    osTitle = "macOS (Apple Silicon M系列芯片)";
+    osTitle = "macOS (前往 GitHub Releases 下载)";
     osIcon = "🍏";
-    downloadUrl = "../outputs/sedentary-reminder_1.0.0_aarch64.dmg"; // 默认提供 M系列包
+    downloadUrl = "https://github.com/Invincible1996/sedentary-reminder/releases";
   } else if (userAgent.indexOf("win") !== -1) {
     // Windows
-    osTitle = "Windows (64位 离线版)";
+    osTitle = "Windows (前往 GitHub Releases 下载)";
     osIcon = "🪟";
-    downloadUrl = "../outputs/sedentary-reminder_1.0.0_x64-setup.exe";
+    downloadUrl = "https://github.com/Invincible1996/sedentary-reminder/releases";
   }
 
   if (primaryDownloadBtn) {
     primaryDownloadBtn.href = downloadUrl;
+    primaryDownloadBtn.setAttribute("target", "_blank");
+    primaryDownloadBtn.setAttribute("rel", "noopener noreferrer");
     if (primaryBtnIcon) primaryBtnIcon.textContent = osIcon;
     if (primaryBtnTitle) primaryBtnTitle.textContent = osTitle;
   }

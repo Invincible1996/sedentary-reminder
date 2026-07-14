@@ -8,7 +8,6 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-BUNDLE_DIR="src-tauri/target/release/bundle"
 OUTPUT_DIR="outputs"
 
 echo "==> 1/3 执行 tauri build..."
@@ -29,6 +28,13 @@ if [ "$(uname)" = "Darwin" ]; then
   fi
 else
   bun run tauri build
+fi
+
+# 自动探测 Tauri 产物根目录
+if [ -d "src-tauri/target/universal-apple-darwin/release/bundle" ]; then
+  BUNDLE_DIR="src-tauri/target/universal-apple-darwin/release/bundle"
+else
+  BUNDLE_DIR="src-tauri/target/release/bundle"
 fi
 
 echo "==> 2/3 收集构建产物到 $OUTPUT_DIR/ ..."

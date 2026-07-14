@@ -85,5 +85,5 @@ bun run tauri build
 ## 📦 打包编译产物快捷访问
 
 为方便你进行双击测试和安装，最新版本的编译产物已自动复制到**项目的 outputs 目录**中：
-* 💿 **安装镜像 (DMG)**: [sedentary-reminder_1.0.0_aarch64.dmg](./outputs/sedentary-reminder_1.0.0_aarch64.dmg)
+* 💿 **安装镜像 (DMG)**: [sedentary-reminder_1.0.0_universal.dmg](./outputs/sedentary-reminder_1.0.0_universal.dmg)
 * 🖥️ **可执行程序 (APP)**: [sedentary-reminder.app](./sedentary-reminder.app)

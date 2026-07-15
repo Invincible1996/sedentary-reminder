@@ -1226,20 +1226,37 @@ html.overlay-window body {
   width: 100%;
   max-width: 380px;
   max-height: 86vh;
-  overflow-y: auto;
-  padding: 22px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
   border-radius: 18px;
   background: var(--bg-elev);
   border: 1px solid var(--border);
   box-shadow: var(--glow), 0 20px 60px rgba(0, 0, 0, 0.2);
   animation: pop 0.22s cubic-bezier(0.18, 0.9, 0.32, 1.2);
+  position: relative;
+}
+
+.settings-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
 }
 
 .settings-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  padding: 22px 22px 10px;
+  margin-bottom: 0;
+}
+
+.settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 22px 22px;
 }
 
 .settings-header h2 {
@@ -1319,14 +1336,17 @@ html.overlay-window body {
 }
 
 /* ---------- Scrollbar ---------- */
-.settings-panel::-webkit-scrollbar {
+.settings-panel::-webkit-scrollbar,
+.settings-content::-webkit-scrollbar {
   width: 6px;
 }
-.settings-panel::-webkit-scrollbar-thumb {
+.settings-panel::-webkit-scrollbar-thumb,
+.settings-content::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 6px;
 }
-.settings-panel::-webkit-scrollbar-thumb:hover {
+.settings-panel::-webkit-scrollbar-thumb:hover,
+.settings-content::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
 
@@ -1429,10 +1449,26 @@ html.overlay-window body {
   z-index: 1010;
   -ms-overflow-style: none;  /* IE/Edge */
   scrollbar-width: none;  /* Firefox */
+  position: relative;
 }
 
 .calendar-modal::-webkit-scrollbar {
   display: none; /* Chrome/Safari/Opera */
+}
+
+.calendar-scroll-wrapper {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.calendar-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1020;
 }
 
 @keyframes scaleUp {
@@ -1788,7 +1824,16 @@ html.overlay-window body {
     height: auto;
     max-height: 92vh;
     width: 380px;
+    overflow: hidden;
+    position: relative;
+  }
+  .calendar-scroll-wrapper {
+    flex-direction: column;
     overflow-y: auto;
+    height: 100%;
+  }
+  .calendar-header-nav {
+    padding-right: 50px;
   }
   .calendar-main-pane {
     flex: none;

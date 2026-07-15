@@ -178,14 +178,14 @@ export default function SettingsPanel({ settings, onChange, onClose, onResetStat
   return (
     <div className="overlay" onClick={onClose}>
       <div className="settings-panel" onClick={(e) => e.stopPropagation()}>
+        <button className="icon-btn settings-close-btn" onClick={onClose} aria-label={t.close}>
+          ✕
+        </button>
         <div className="settings-header">
           <h2>{t.settings}</h2>
-          <button className="icon-btn" onClick={onClose} aria-label={t.close}>
-            ✕
-          </button>
         </div>
-
-        <div className="settings-group">
+        <div className="settings-content">
+          <div className="settings-group">
           <label className="settings-label">
             {t.exerciseInterval} ({settings.exercise.intervalMinutes} {t.minuteUnit})
           </label>
@@ -373,6 +373,7 @@ export default function SettingsPanel({ settings, onChange, onClose, onResetStat
         <p className="settings-note">
           {t.settingsSavedNote}
         </p>
+        </div>
       </div>
     </div>
   );

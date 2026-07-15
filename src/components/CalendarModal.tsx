@@ -233,8 +233,12 @@ export default function CalendarModal({ lang, onClose }: Props) {
   return (
     <div className="overlay" onClick={onClose}>
       <div className="calendar-modal" onClick={(e) => e.stopPropagation()}>
-        {/* 左侧日历主体 */}
-        <div className="calendar-main-pane">
+        <button className="icon-btn calendar-close-btn" onClick={onClose} aria-label={t.close}>
+          ✕
+        </button>
+        <div className="calendar-scroll-wrapper">
+          {/* 左侧日历主体 */}
+          <div className="calendar-main-pane">
           <div className="calendar-header-nav">
             <div className="calendar-nav-title">
               <h2>
@@ -324,9 +328,6 @@ export default function CalendarModal({ lang, onClose }: Props) {
 
         {/* 右侧选定日期吉历卡片 */}
         <div className="calendar-detail-pane">
-          <button className="detail-close-btn" onClick={onClose} aria-label={t.close}>
-            ✕
-          </button>
           <div className="detail-card-content">
             <div className="detail-solar-big">
               <span className="big-day-num">{selectedDate.getDate()}</span>
@@ -370,6 +371,7 @@ export default function CalendarModal({ lang, onClose }: Props) {
               )}
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

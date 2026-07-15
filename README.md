@@ -62,6 +62,12 @@
 ### 1. 环境准备
 确保你的本地开发环境中已安装了 Node.js (推荐使用 Bun) 和 Rust 工具链。
 
+* 🍏 **macOS 环境要求**：
+  * 安装 Xcode Command Line Tools：`xcode-select --install`
+* 🪟 **Windows 环境要求**：
+  * 安装 Visual Studio C++ 生成工具（在 Visual Studio Installer 中勾选“使用 C++ 的桌面开发”工作负载）。
+  * 确保安装了 WebView2 Runtime（Windows 10/11 通常已内置）。
+
 ### 2. 安装依赖
 在项目根目录下运行：
 ```bash
@@ -75,17 +81,32 @@ bun run tauri dev
 ```
 
 ### 4. 生产打包构建
-打包编译生成 macOS 生产环境下的 `.app` 文件和安装镜像 `.dmg`：
-```bash
-bun run tauri build
-```
+在 macOS 或 Windows 环境下打包编译生成对应平台的安装镜像：
+
+* **本地快速打包（推荐，自动收集至 outputs 目录）**：
+  ```bash
+  bun run dist
+  ```
+* **使用 Tauri 官方默认打包**：
+  ```bash
+  bun run tauri build
+  ```
 
 ---
 
-## 📦 打包编译产物快捷访问
+## 📦 下载与安装 (Releases)
 
-为方便你进行双击测试和安装，最新版本的编译产物已自动复制到**项目的 outputs 目录**中：
-* 💿 **安装镜像 (DMG)**:
-  * 🍏 [Apple Silicon (M1/M2/M3) 芯片版本](./outputs/sedentary-reminder_1.0.0_aarch64.dmg)
-  * 💎 [Intel 芯片版本](./outputs/sedentary-reminder_1.0.0_x64.dmg)
-* 🖥️ **可执行程序 (APP)**: [sedentary-reminder.app](./sedentary-reminder.app)
+本项目的正式发布版本与预编译安装包已发布在 GitHub Releases 中，请直接前往下载最新版本：
+
+🔗 **[前往 GitHub Releases 下载页面](https://github.com/Invincible1996/sedentary-reminder/releases)**
+
+* 🍏 **macOS 版本 (DMG 镜像)**:
+  * Apple Silicon 芯片版本 (M1/M2/M3 等)：`sedentary-reminder_1.0.0_aarch64.dmg`
+  * Intel 芯片版本：`sedentary-reminder_1.0.0_x64.dmg`
+* 🪟 **Windows 版本 (安装包)**:
+  * EXE 离线安装包：`sedentary-reminder_1.0.0_x64-setup.exe`
+  * MSI 安装包：`sedentary-reminder_1.0.0_x64_en-US.msi`
+
+> [!TIP]
+> **本地开发与测试**：
+> 如果你在本地通过 `bun run dist` 脚本完成了打包构建，生成的安装镜像（.dmg / .exe / .msi）会被自动复制到项目根目录下的 [outputs/](file:///Users/kevin/tauri-project/sedentary-reminder/outputs) 目录中，方便直接进行本地安装与测试。

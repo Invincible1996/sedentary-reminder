@@ -40,6 +40,24 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Update version from Git tag
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          VERSION="${TAG_NAME#v}"
+          echo "Updating version to $VERSION"
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '$VERSION';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+          node -e "
+            const fs = require('fs');
+            const config = JSON.parse(fs.readFileSync('src-tauri/tauri.conf.json', 'utf8'));
+            config.version = '$VERSION';
+            fs.writeFileSync('src-tauri/tauri.conf.json', JSON.stringify(config, null, 2) + '\n');
+          "
+
       - name: Build & collect bundles to outputs/
         run: bash scripts/build.sh
 

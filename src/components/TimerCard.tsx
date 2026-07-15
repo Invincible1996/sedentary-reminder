@@ -15,6 +15,7 @@ interface Props {
   lang: Language;
   onToggleEnabled: () => void;
   onSkip: () => void;
+  onTogglePause?: () => void;
 }
 
 function formatTime(totalSeconds: number): string {
@@ -35,6 +36,7 @@ export default function TimerCard({
   lang,
   onToggleEnabled,
   onSkip,
+  onTogglePause,
 }: Props) {
   const t = I18N_TRANSLATIONS[lang];
   const R = 52;
@@ -114,14 +116,35 @@ export default function TimerCard({
         </div>
       </div>
 
-      <button
-        className="skip-btn"
-        onClick={onSkip}
-        disabled={!enabled || fired || paused}
-        title={lang === "zh" ? "立即触发该提醒" : "Trigger this reminder immediately"}
-      >
-        {t.skipButton}
-      </button>
+      {type === "exercise" ? (
+        <div className="timer-actions">
+          <button
+            className="skip-btn"
+            onClick={onSkip}
+            disabled={!enabled || fired || paused}
+            title={lang === "zh" ? "立即触发该提醒" : "Trigger this reminder immediately"}
+          >
+            {t.skipButton}
+          </button>
+          <button
+            className={`card-pause-btn${paused ? " paused" : ""}`}
+            onClick={onTogglePause}
+            disabled={!enabled || fired}
+            title={paused ? t.startReminder : t.pauseReminder}
+          >
+            {paused ? `▶  ${t.startReminder}` : `⏸  ${t.pauseReminder}`}
+          </button>
+        </div>
+      ) : (
+        <button
+          className="skip-btn"
+          onClick={onSkip}
+          disabled={!enabled || fired || paused}
+          title={lang === "zh" ? "立即触发该提醒" : "Trigger this reminder immediately"}
+        >
+          {t.skipButton}
+        </button>
+      )}
     </div>
   );
 }

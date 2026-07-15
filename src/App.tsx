@@ -403,17 +403,6 @@ function App() {
       </section>
 
       <section className="timers">
-        <div className="timers-header">
-          <span className="timers-title">{t.remindersTitle}</span>
-          <div className={`global-control${paused ? " paused" : " running"}`}>
-            <button className="global-play-btn" onClick={togglePause}>
-              {paused ? `▶  ${t.startReminder}` : `⏸  ${t.pauseReminder}`}
-            </button>
-            <span className="global-control-status">
-              {paused ? t.paused : t.running}
-            </span>
-          </div>
-        </div>
         <TimerCard
           type="exercise"
           remainingSeconds={exercise.remainingSeconds}
@@ -429,6 +418,7 @@ function App() {
             })
           }
           onSkip={exercise.skip}
+          onTogglePause={togglePause}
         />
         <TimerCard
           type="water"

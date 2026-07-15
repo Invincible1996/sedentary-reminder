@@ -1,112 +1,49 @@
 # 🧘 sedentary-reminder (久坐提醒) `v1.0.0`
 
-一座融合了现代桌面美学、智能多屏调度、防绕过锁屏机制与系统状态栏深度集成的健康看护管家。基于 **Tauri v2** + **React** + **TypeScript** 倾力打造，UI 样式采用 **纯原生 CSS (Vanilla CSS)** 极限雕琢，无任何三方 CSS 库污染，极致轻量，极速启动。
+基于 **Tauri v2** + **React** + **TypeScript** 倾力打造的健康看护桌面管家，UI 样式采用 **纯原生 CSS (Vanilla CSS)** 极限雕琢，极致轻量，极速启动。
 
 ---
 
-## 🎨 功能特性
+## 🎨 核心特性
 
-### 1. 🖥️ 极具未来感的磨砂玻璃美学 UI
-* **霓虹背景微光**：主界面采用深邃暗色底色，辅以紫靛色 (`Indigo`) 和青蓝色 (`Cyan`) 霓虹径向背景晕染，带来惊艳的视觉深度。
-* **磨砂玻璃微交互**：卡片拥有高精细度的 `backdrop-filter` 模糊边界与极细金属边框，辅以圆环自适应进度发光、拟物化拟态投影，悬浮按钮拥有顺滑的过渡形变回弹。
-
-### 2. 🏃 灵动生动的原生 SVG 微动画
-* **拉伸运动 (`ExerciseIcon`)**：精细拼接的 SVG 肢体节点，模拟顺滑的下沉律动与四肢奔跑/拉伸周期，告别死板的静态贴图。
-* **物理喝水 (`WaterIcon`)**：利用双层不同透明度、振幅与速率的贝塞尔波浪曲线，实现水流向滚动的动态液体质感，并伴有水滴变速下坠与气泡飘浮淡出。
-
-### 3. 🔒 锁屏级跨屏强制休眠
-* **多显示器绝对同步与多样式弹窗**：休息计时结束时，拉起全屏幕高斯模糊锁屏，采用逻辑单位自动适配混合 DPI 下的多显示器坐标，瞬间独立覆盖全部屏幕，且多屏文案、状态在被唤醒时完全保持一致。同时支持在设置中更改为屏幕中间、四角小弹窗等圆角样式。
-* **健康科普随机文案**：告别单一的“去喝水”，系统在起立运动和水合作用的主题下提供数十条随机长篇科普，每次锁屏都是一次舒缓的健康科普小科普。
-* **稍后提醒机制**：提供“完成休息”以及“稍后提醒（5/10/15 分钟）”，并在强制倒计时中确保用户得到强制舒缓。
-
-### 4. 🧱 macOS 锁屏级任务调度（Mission Control）防绕过
-* **屏保最高级浮动**：通过 Rust 与 Cocoa 接口将窗口层级（`NSWindow.Level`）强行提升至 **`2000`（系统屏幕保护程序层级）**。
-* **脱离调度管理**：注入 `NSWindowCollectionBehaviorStationary` 和 `CanJoinAllSpaces` 行为，当用户执行 Exposé、切换虚拟桌面或三/四指上滑激活 Mission Control（任务调度）时，全屏遮罩及提醒卡片在后台均处于固定且绝对置顶状态，无法被缩小、推开或规避。
-
-### 5. 🖱️ 原生左键单击托盘菜单 (Stretchly 风格)
-* **左键直接唤起**：配置 `.show_menu_on_left_click(true)`，让左键单击系统托盘图标直接唤起原生的控制菜单。
-* **下次休息时间动态同步**：菜单首栏为状态指示器（如“下次休息 大约 28 分钟后”），由 React 计时器秒级计算并向 Rust 通信，动态更新菜单文字，免去手动刷新。
-* **双向联动指令**：
-  * **跳到下一次**：React 端捕捉，智能跳过并重置当前最近的计时任务。
-  * **暂停提醒 / 恢复提醒**：挂起/恢复后台计时器，且菜单项文字跟随计时器暂停状态自适应切换。
-  * **重置提醒**：一键重置所有倒计时，开启全新健康循环。
-  * **打开主界面**：一键重新展示并聚焦主配置面板。
-  * **退出**：干净利落地关闭后台常驻进程。
-
-### 6. 🎚️ 极佳交互的精致配置面板 (UX & Control Upgrades)
-* **刻度滚动滑动条 (Custom Tick Sliders)**：使用具有数学比例进度的高级滑动条组件替换传统芯片按钮组，实时在 Label 旁显示选中的分/秒数值，并带有方形白色刻度点。
-* **个性化下拉框 (Custom Simulated Selects)**：纯 React 逻辑编写的模拟下拉选择器，代替原生 Select，实现背景模糊、毛玻璃及下拉菜单高亮色完全跟随主题。
-
-### 7. 🎨 多主题配色与语言本地化 (Themes & Languages)
-* **8款动态主题适配**：支持 8 款精心调配的预设主题（经典深邃、经典极简、北欧森林、樱花浪漫、落日暖阳、赛博朋克、幽邃深海、熔岩曜石），主题切换时滑块、按钮、下拉选项、开关等组件均完美高亮跟随。
-* **中英双语 (i18n)**：支持中文与英文一键随时在线切换。
-
-### 8. 📅 农历健康日历看板 (Chinese Calendar)
-* **深度集成中国农历**：内置包含中国法定节假日放假 (休) 与调休上班 (班) 状态、节气、生肖干支、传统节日的日历面板，方便规划日程。
-
-### 9. 📈 数据统计与重置功能 (Stats Reset)
-* **今日健康统计**：实时累计并统计今日累计起身运动与喝水休息次数。
-* **一键清空数据**：设置页提供“重置今日数据”行，具备双语系统级确认提示，防止误触清空，保留今日的日期统计锚点。
+* 🖥️ **磨砂玻璃美学 UI**：深邃的暗色霓虹微光背景融合精细的高斯模糊（backdrop-filter），自适应圆环发光，支持 8 款精心调配的预设主题。
+* 🏃 **SVG 灵动微动画**：内置精细拼接的人体拉伸骨骼运动动画与双层贝塞尔波浪物理喝水动态，生动逼真。
+* 🔒 **跨屏强制休眠**：休息时间到达时强制锁屏式高斯模糊遮罩，支持多显示器同步坐标定位，提供稍后提醒与随机健康科普文案。
+* 🧱 **macOS 任务调度防绕过**：强行提升窗口层级至系统屏保级（2000），脱离 Exposé/Mission Control 虚拟桌面调度，实现强制休息。
+* 🖱️ **左键托盘深度绑定**：左键单击托盘即可唤出控制菜单，实时显示下次休息倒计时，支持跳过、暂停、重置等双向联动指令。
+* 📅 **农历与健康统计**：深度集成中国农历面板（包含法定节假日放假与调休上班、二十四节气），提供起身与喝水的今日健康数据统计。
 
 ---
 
 ## 🛠️ 技术栈
 
-* **后端 (Backend)**: Rust, Tauri v2 (使用 Cocoa & Obj-C FFI 桥接 macOS 窗口底层属性)
-* **前端 (Frontend)**: React 19, TypeScript, Vite, 原生 CSS (Vanilla CSS, 零额外 CSS 框架引入)
+* **后端 (Backend)**: Rust, Tauri v2
+* **前端 (Frontend)**: React 19, TypeScript, Vite, Vanilla CSS
 
 ---
 
 ## 💻 本地开发指南
 
-### 1. 环境准备
-确保你的本地开发环境中已安装了 Node.js (推荐使用 Bun) 和 Rust 工具链。
-
-* 🍏 **macOS 环境要求**：
-  * 安装 Xcode Command Line Tools：`xcode-select --install`
-* 🪟 **Windows 环境要求**：
-  * 安装 Visual Studio C++ 生成工具（在 Visual Studio Installer 中勾选“使用 C++ 的桌面开发”工作负载）。
-  * 确保安装了 WebView2 Runtime（Windows 10/11 通常已内置）。
-
-### 2. 安装依赖
-在项目根目录下运行：
+### 1. 安装依赖与环境
+准备好 Node.js/Bun 和 Rust 环境后（Windows 下需 C++ 桌面开发工具与 WebView2，macOS 需 Xcode Command Line Tools），在根目录下执行：
 ```bash
 bun install
 ```
 
-### 3. 运行开发模式
-启动 Tauri 开发者模式（支持热重载）：
+### 2. 启动开发模式
 ```bash
 bun run tauri dev
 ```
 
-### 4. 生产打包构建
-在 macOS 或 Windows 环境下打包编译生成对应平台的安装镜像：
-
-* **本地快速打包（推荐，自动收集至 outputs 目录）**：
-  ```bash
-  bun run dist
-  ```
-* **使用 Tauri 官方默认打包**：
-  ```bash
-  bun run tauri build
-  ```
+### 3. 生产打包构建
+```bash
+bun run dist  # 推荐，本地打包并自动收集至 outputs/ 目录
+```
 
 ---
 
 ## 📦 下载与安装 (Releases)
 
-本项目的正式发布版本与预编译安装包已发布在 GitHub Releases 中，请直接前往下载最新版本：
-
-🔗 **[前往 GitHub Releases 下载页面](https://github.com/Invincible1996/sedentary-reminder/releases)**
-
-* 🍏 **macOS 版本 (DMG 镜像)**:
-  * Apple Silicon 芯片版本 (M1/M2/M3 等)：`sedentary-reminder_1.0.0_aarch64.dmg`
-  * Intel 芯片版本：`sedentary-reminder_1.0.0_x64.dmg`
-* 🪟 **Windows 版本 (安装包)**:
-  * EXE 离线安装包：`sedentary-reminder_1.0.0_x64-setup.exe`
-  * MSI 安装包：`sedentary-reminder_1.0.0_x64_en-US.msi`
-
-> [!TIP]
-> **本地开发与测试**：
-> 如果你在本地通过 `bun run dist` 脚本完成了打包构建，生成的安装镜像（.dmg / .exe / .msi）会被自动复制到项目根目录下的 [outputs/](file:///Users/kevin/tauri-project/sedentary-reminder/outputs) 目录中，方便直接进行本地安装与测试。
+请前往 **[GitHub Releases 页面](https://github.com/Invincible1996/sedentary-reminder/releases)** 下载最新版本的预编译包：
+* 🍏 **macOS (DMG)**: 支持 Apple Silicon (M1/M2/M3) 与 Intel 芯片。
+* 🪟 **Windows (EXE/MSI)**: 提供单文件 EXE 安装包与 MSI 安装包。

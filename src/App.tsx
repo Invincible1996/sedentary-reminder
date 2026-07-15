@@ -402,16 +402,18 @@ function App() {
         </div>
       </section>
 
-      <section className={`control${paused ? " paused" : " running"}`}>
-        <button className="play-btn" onClick={togglePause}>
-          {paused ? `▶  ${t.startReminder}` : `⏸  ${t.pauseReminder}`}
-        </button>
-        <span className="control-status">
-          {paused ? t.paused : t.running}
-        </span>
-      </section>
-
       <section className="timers">
+        <div className="timers-header">
+          <span className="timers-title">{t.remindersTitle}</span>
+          <div className={`global-control${paused ? " paused" : " running"}`}>
+            <button className="global-play-btn" onClick={togglePause}>
+              {paused ? `▶  ${t.startReminder}` : `⏸  ${t.pauseReminder}`}
+            </button>
+            <span className="global-control-status">
+              {paused ? t.paused : t.running}
+            </span>
+          </div>
+        </div>
         <TimerCard
           type="exercise"
           remainingSeconds={exercise.remainingSeconds}

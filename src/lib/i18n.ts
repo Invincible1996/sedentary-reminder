@@ -84,6 +84,7 @@ export const I18N_TRANSLATIONS: Record<Language, any> = {
     resetStatsLabel: "重置今日数据",
     resetStatsHint: "清空今日已累计的起身与喝水数据",
     resetStatsBtn: "立即重置",
+    remindersTitle: "今日提醒",
   },
   en: {
     title: "Sedentary Reminder",
@@ -168,5 +169,6 @@ export const I18N_TRANSLATIONS: Record<Language, any> = {
     resetStatsLabel: "Reset Today's Data",
     resetStatsHint: "Clear today's stood up and hydration counts",
     resetStatsBtn: "Reset",
+    remindersTitle: "Reminders",
   },
 };

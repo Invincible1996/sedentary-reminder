@@ -4,6 +4,28 @@
 
 ---
 
+## 📸 界面预览
+
+<p align="center">
+  <img src="./screenshots/PixPin_2026-07-15_13-49-03.png" width="400" alt="主界面" />
+  <br />
+  <sub>主界面预览</sub>
+</p>
+
+<p align="center">
+  <img src="./screenshots/PixPin_2026-07-15_13-49-20.png" width="400" alt="设置与日历" />
+  <br />
+  <sub>设置面板与日历预览</sub>
+</p>
+
+<p align="center">
+  <img src="./screenshots/PixPin_2026-07-15_13-49-44.png" width="600" alt="强制休息锁屏" />
+  <br />
+  <sub>锁屏提醒预览</sub>
+</p>
+
+---
+
 ## 🎨 核心特性
 
 * 🖥️ **磨砂玻璃美学 UI**：深邃的暗色霓虹微光背景融合精细的高斯模糊（backdrop-filter），自适应圆环发光，支持 8 款精心调配的预设主题。

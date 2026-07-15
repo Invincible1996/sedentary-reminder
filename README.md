@@ -7,15 +7,10 @@
 ## 📸 界面预览
 
 <p align="center">
-  <img src="./screenshots/PixPin_2026-07-15_13-49-03.png" width="400" alt="主界面" />
+  <img src="./screenshots/PixPin_2026-07-15_13-49-03.png" width="48%" alt="主界面" />
+  <img src="./screenshots/PixPin_2026-07-15_13-49-20.png" width="48%" alt="设置与日历" />
   <br />
-  <sub>主界面预览</sub>
-</p>
-
-<p align="center">
-  <img src="./screenshots/PixPin_2026-07-15_13-49-20.png" width="400" alt="设置与日历" />
-  <br />
-  <sub>设置面板与日历预览</sub>
+  <sub>左：主界面预览 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 右：设置面板与日历预览</sub>
 </p>
 
 <p align="center">

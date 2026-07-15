@@ -389,7 +389,8 @@ function App() {
         </div>
       </header>
 
-      <section className="stats">
+      <div className="app-content">
+        <section className="stats">
         <div className="stat">
           <span className="stat-num">{stats.exercise}</span>
           <span className="stat-label">{t.todayExercise}</span>
@@ -448,6 +449,7 @@ function App() {
       <footer className="app-footer">
         {t.footerHint}
       </footer>
+      </div>
 
       {showSettings && (
         <SettingsPanel

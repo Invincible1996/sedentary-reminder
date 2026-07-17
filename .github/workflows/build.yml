@@ -58,6 +58,20 @@ jobs:
             fs.writeFileSync('src-tauri/tauri.conf.json', JSON.stringify(config, null, 2) + '\n');
           "
 
+      - name: Patch Tauri Config for CI Webview Fallback
+        run: |
+          node -e "
+            const fs = require('fs');
+            if (!fs.existsSync('src-tauri/webview2_runtime')) {
+              console.log('src-tauri/webview2_runtime not found. Patching tauri.conf.json to use downloadBootstrapper for CI fallback.');
+              const config = JSON.parse(fs.readFileSync('src-tauri/tauri.conf.json', 'utf8'));
+              if (config.bundle && config.bundle.windows) {
+                config.bundle.windows.webviewInstallMode = { type: 'downloadBootstrapper' };
+                fs.writeFileSync('src-tauri/tauri.conf.json', JSON.stringify(config, null, 2) + '\n');
+              }
+            }
+          "
+
       - name: Build & collect bundles to outputs/
         run: bash scripts/build.sh
 

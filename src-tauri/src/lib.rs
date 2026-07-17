@@ -1,5 +1,7 @@
 #![allow(unexpected_cfgs)]
 
+use std::sync::Mutex;
+
 use tauri::{
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::TrayIconBuilder,
@@ -9,6 +11,50 @@ use tauri::{
 struct TrayMenuState {
     info_item: MenuItem<tauri::Wry>,
     toggle_pause_item: MenuItem<tauri::Wry>,
+}
+
+#[derive(Default)]
+struct MacosPresentationState {
+    previous_options: Mutex<Option<usize>>,
+}
+
+#[tauri::command]
+fn set_macos_kiosk_mode(
+    state: tauri::State<'_, MacosPresentationState>,
+    enabled: bool,
+) -> Result<(), String> {
+    #[cfg(target_os = "macos")]
+    {
+        use cocoa::base::id;
+        use objc::{msg_send, sel, sel_impl};
+
+        let mut previous_options = state
+            .previous_options
+            .lock()
+            .map_err(|_| "failed to lock macOS presentation state".to_string())?;
+
+        unsafe {
+            let app: id = msg_send![objc::class!(NSApplication), sharedApplication];
+
+            if enabled {
+                let previous =
+                    *previous_options.get_or_insert_with(|| msg_send![app, presentationOptions]);
+                // Hide the Dock is required by AppKit when process switching is disabled.
+                let kiosk_options = previous | (1 << 1) | (1 << 5) | (1 << 8);
+                let _: () = msg_send![app, setPresentationOptions: kiosk_options];
+                let _: () = msg_send![app, activateIgnoringOtherApps: true];
+            } else if let Some(previous) = previous_options.take() {
+                let _: () = msg_send![app, setPresentationOptions: previous];
+            }
+        }
+    }
+
+    #[cfg(not(target_os = "macos"))]
+    {
+        let _ = (state, enabled);
+    }
+
+    Ok(())
 }
 
 #[tauri::command]
@@ -24,11 +70,19 @@ fn update_tray_status(
 }
 
 #[tauri::command]
-fn setup_overlay_window(app: tauri::AppHandle, label: String, is_fullscreen: bool) -> Result<(), String> {
+fn setup_overlay_window(
+    app: tauri::AppHandle,
+    label: String,
+    is_fullscreen: bool,
+    monitor_pos: Option<(i32, i32)>,
+    monitor_size: Option<(u32, u32)>,
+) -> Result<(), String> {
     if let Some(window) = app.get_webview_window(&label) {
         if is_fullscreen {
-            // Force window to occupy the entire monitor in physical pixels
-            if let Ok(Some(monitor)) = window.current_monitor() {
+            if let (Some(pos), Some(size)) = (monitor_pos, monitor_size) {
+                let _ = window.set_position(tauri::Position::Physical(tauri::PhysicalPosition::new(pos.0, pos.1)));
+                let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize::new(size.0, size.1)));
+            } else if let Ok(Some(monitor)) = window.current_monitor() {
                 let _ = window.set_position(tauri::Position::Physical(*monitor.position()));
                 let _ = window.set_size(tauri::Size::Physical(*monitor.size()));
             }
@@ -108,6 +162,7 @@ pub fn run() {
                 info_item: info_item.clone(),
                 toggle_pause_item: toggle_pause_item.clone(),
             });
+            app.manage(MacosPresentationState::default());
 
             TrayIconBuilder::with_id("main-tray")
                 .icon(app.default_window_icon().unwrap().clone())
@@ -142,6 +197,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             update_tray_status,
             setup_overlay_window,
+            set_macos_kiosk_mode,
             is_any_app_fullscreen
         ])
         .run(tauri::generate_context!())

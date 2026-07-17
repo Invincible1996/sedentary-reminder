@@ -12,6 +12,7 @@ const PREFIX = "sr-overlay-";
 // 已创建的遮罩窗口 label,用于统一销毁。
 const openLabels = new Set<string>();
 let runSeq = 0;
+let macosKioskModeEnabled = false;
 
 /**
  * 在每一块显示器上各创建一个全屏置顶遮罩窗口。
@@ -46,6 +47,16 @@ export async function openOverlays(
     const runId = ++runSeq;
     const targets: (Monitor | null)[] = monitors.length > 0 ? monitors : [null];
 
+    if (popupType === "fullscreen") {
+      macosKioskModeEnabled = true;
+      try {
+        await invoke("set_macos_kiosk_mode", { enabled: true });
+      } catch (err) {
+        macosKioskModeEnabled = false;
+        throw err;
+      }
+    }
+
     await Promise.all(
       targets.map((m, i) =>
         createOne(`${PREFIX}${runId}-${i}`, m, type, force, endAt, messageIndex, lang, popupType, i === 0)
@@ -53,6 +64,18 @@ export async function openOverlays(
     );
   } catch (err) {
     console.error("Failed to open overlays:", err);
+    await disableMacosKioskMode();
+  }
+}
+
+async function disableMacosKioskMode(): Promise<void> {
+  if (!macosKioskModeEnabled) return;
+
+  macosKioskModeEnabled = false;
+  try {
+    await invoke("set_macos_kiosk_mode", { enabled: false });
+  } catch (err) {
+    console.error("Failed to restore macOS presentation options:", err);
   }
 }
 
@@ -141,7 +164,9 @@ async function createOne(
     try {
       await invoke("setup_overlay_window", { 
         label, 
-        isFullscreen: popupType === "fullscreen" 
+        isFullscreen: popupType === "fullscreen",
+        monitorPos: monitor ? [monitor.position.x, monitor.position.y] : null,
+        monitorSize: monitor ? [monitor.size.width, monitor.size.height] : null,
       });
     } catch {
       // ignore
@@ -155,14 +180,18 @@ async function createOne(
 export async function closeOverlays(): Promise<void> {
   const labels = [...openLabels];
   openLabels.clear();
-  await Promise.all(
-    labels.map(async (label) => {
-      try {
-        const win = await WebviewWindow.getByLabel(label);
-        if (win) await win.destroy();
-      } catch {
-        // ignore
-      }
-    })
-  );
+  try {
+    await Promise.all(
+      labels.map(async (label) => {
+        try {
+          const win = await WebviewWindow.getByLabel(label);
+          if (win) await win.destroy();
+        } catch {
+          // ignore
+        }
+      })
+    );
+  } finally {
+    await disableMacosKioskMode();
+  }
 }

@@ -33,6 +33,10 @@ export const REMINDER_COPY: Record<Language, Record<ReminderType, ReminderCopy[]
         title: "打断久坐，让大脑深呼吸",
         body: "连续专注工作会让大脑效率逐渐降低，久坐更会让身体代谢放缓。现在就是最棒的休息契机！站起来去接杯温水、或者在走廊踱步片刻。打断久坐的恶性循环，给大脑一个空档期，灵感往往就在此时悄然浮现。",
       },
+      {
+        title: "舒展胸廓，畅快呼吸",
+        body: "长时间面对屏幕容易含胸驼背、呼吸变浅。请站立挺拔，屈臂后振做两次扩胸运动，随后展开双臂充分打开胸腔与肩胛骨。深吸一口气，感受新鲜氧气充盈肺部，快速缓解胸闷与肩颈酸痛。",
+      },
     ],
     water: [
       {
@@ -86,6 +90,10 @@ export const REMINDER_COPY: Record<Language, Record<ReminderType, ReminderCopy[]
       {
         title: "Break the Chair Cycle, Let Your Mind Breathe",
         body: "Continuous work reduces brain efficiency, and prolonged sitting slows down metabolism. Now is the perfect time for a break! Stand up, get a glass of warm water, or walk down the hallway. Break the sitting cycle and give your mind a pause; inspiration often strikes during these moments.",
+      },
+      {
+        title: "Open Your Chest, Breathe Deeply",
+        body: "Prolonged desk work leads to rounded shoulders and shallow breathing. Stand up tall, pump your bent arms back for chest expansion, then spread your arms wide to fully open your chest and shoulder blades. Take a deep breath to refresh your lungs and relieve shoulder tension.",
       },
     ],
     water: [

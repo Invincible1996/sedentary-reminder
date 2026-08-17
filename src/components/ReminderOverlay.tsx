@@ -86,13 +86,16 @@ export default function ReminderOverlay({
       <div className="overlay-card" style={style}>
         <div className="overlay-icon">
           {type === "exercise" ? (
-            <ExerciseIcon className="overlay-svg-icon" />
+            <ExerciseIcon
+              className="overlay-svg-icon"
+              variant={messageIndex % 2 === 1 ? "chest" : "overhead"}
+            />
           ) : (
             <WaterIcon className="overlay-svg-icon" />
           )}
         </div>
-        <h2>{copy.title}</h2>
-        <p>{copy.body}</p>
+        <h2 className="overlay-title">{copy.title}</h2>
+        <p className="overlay-body">{copy.body}</p>
         <div className="overlay-force-status">
           <div className="overlay-countdown">{formatRemaining(remaining)}</div>
           <p className="overlay-force-hint">{hintText}</p>

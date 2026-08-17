@@ -879,55 +879,418 @@ body::-webkit-scrollbar-thumb:hover,
   }
 }
 
-/* --- Exercise Icon Animations (Running Cycle) --- */
-.svg-joint-left-leg {
-  transform-origin: 100px 110px;
-  animation: legSwingLeft 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+/* --- Exercise Icon Animations (Overhead Stretch & Breathe) --- */
+.svg-stretch-arm-l-upper {
+  transform-origin: 88px 76px;
+  animation: stretchArmLUpper 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.svg-joint-right-leg {
-  transform-origin: 100px 110px;
-  animation: legSwingRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+.svg-stretch-arm-l-fore {
+  transform-origin: 70px 98px;
+  animation: stretchArmLFore 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.svg-joint-left-arm {
-  transform-origin: 100px 70px;
-  animation: armSwingLeft 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+.svg-stretch-arm-r-upper {
+  transform-origin: 112px 76px;
+  animation: stretchArmRUpper 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.svg-joint-right-arm {
-  transform-origin: 100px 70px;
-  animation: armSwingRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+.svg-stretch-arm-r-fore {
+  transform-origin: 130px 98px;
+  animation: stretchArmRFore 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.svg-torso-head {
-  animation: torsoBob 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+.svg-stretch-body {
+  transform-origin: 100px 116px;
+  animation: stretchBodyBreathe 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@keyframes legSwingLeft {
-  0%, 100% { transform: rotate(-25deg); }
-  50% { transform: rotate(25deg); }
+.svg-stretch-legs {
+  transform-origin: 100px 178px;
+  animation: stretchLegs 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@keyframes legSwingRight {
-  0%, 100% { transform: rotate(25deg); }
-  50% { transform: rotate(-25deg); }
+/* Overhead sparkles that trigger during the stretch peak */
+.svg-sparkle {
+  transform-origin: 100px 15px;
+  animation: sparkleGlow 4s ease-in-out infinite;
 }
 
-@keyframes armSwingLeft {
-  0%, 100% { transform: rotate(35deg); }
-  50% { transform: rotate(-35deg); }
+.svg-sparkle-main {
+  animation: sparkleMainRotate 4s ease-in-out infinite;
 }
 
-@keyframes armSwingRight {
-  0%, 100% { transform: rotate(-35deg); }
-  50% { transform: rotate(35deg); }
+.svg-sparkle-left {
+  animation-delay: 0.1s;
 }
 
-@keyframes torsoBob {
-  0%, 50%, 100% { transform: translateY(0); }
-  25%, 75% { transform: translateY(4px); }
+.svg-sparkle-right {
+  animation-delay: 0.15s;
 }
+
+.svg-sparkle-top {
+  animation-delay: 0.05s;
+}
+
+/* Upward energy aura */
+.svg-aura {
+  animation: auraFloat 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.svg-aura-left {
+  transform-origin: 64px 68px;
+}
+
+.svg-aura-right {
+  transform-origin: 136px 68px;
+}
+
+@keyframes stretchArmLUpper {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    /* 蓄力微摆 */
+    transform: rotate(8deg);
+  }
+  42%, 66% {
+    /* 举臂过头顶 */
+    transform: rotate(-148deg);
+  }
+  86% {
+    /* 舒缓放下 */
+    transform: rotate(-15deg);
+  }
+}
+
+@keyframes stretchArmLFore {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-4deg);
+  }
+  42%, 66% {
+    /* 在头顶自然向中心延伸聚拢 */
+    transform: rotate(26deg);
+  }
+  86% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes stretchArmRUpper {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-8deg);
+  }
+  42%, 66% {
+    /* 举臂过头顶 */
+    transform: rotate(148deg);
+  }
+  86% {
+    transform: rotate(15deg);
+  }
+}
+
+@keyframes stretchArmRFore {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(4deg);
+  }
+  42%, 66% {
+    /* 在头顶自然向中心延伸聚拢 */
+    transform: rotate(-26deg);
+  }
+  86% {
+    transform: rotate(-8deg);
+  }
+}
+
+@keyframes stretchBodyBreathe {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  15% {
+    transform: translateY(1px) scaleY(0.99);
+  }
+  42%, 66% {
+    /* 深吸气拔长脊柱 */
+    transform: translateY(-5px) scaleY(1.05);
+  }
+  86% {
+    transform: translateY(-1px) scaleY(1.01);
+  }
+}
+
+@keyframes stretchLegs {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  42%, 66% {
+    /* 提踵微拉伸 */
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes sparkleGlow {
+  0%, 30%, 82%, 100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  42%, 66% {
+    opacity: 0.95;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes sparkleMainRotate {
+  0%, 30%, 82%, 100% {
+    opacity: 0;
+    transform: scale(0.2) rotate(0deg);
+  }
+  42%, 66% {
+    opacity: 1;
+    transform: scale(1.15) rotate(45deg);
+  }
+}
+
+@keyframes auraFloat {
+  0%, 30%, 82%, 100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  42%, 66% {
+    opacity: 0.6;
+    transform: translateY(-6px);
+  }
+}
+
+/* --- Chest Expansion Icon Animations (Expand & Open Chest) --- */
+.svg-chest-arm-l-upper {
+  transform-origin: 88px 76px;
+  animation: chestUpperL 3.8s cubic-bezier(0.35, 0.05, 0.25, 0.95) infinite;
+}
+
+.svg-chest-arm-l-fore {
+  transform-origin: 64px 82px;
+  animation: chestForeL 3.8s cubic-bezier(0.35, 0.05, 0.25, 0.95) infinite;
+}
+
+.svg-chest-arm-r-upper {
+  transform-origin: 112px 76px;
+  animation: chestUpperR 3.8s cubic-bezier(0.35, 0.05, 0.25, 0.95) infinite;
+}
+
+.svg-chest-arm-r-fore {
+  transform-origin: 136px 82px;
+  animation: chestForeR 3.8s cubic-bezier(0.35, 0.05, 0.25, 0.95) infinite;
+}
+
+.svg-chest-body {
+  transform-origin: 100px 116px;
+  animation: chestBodyBreathe 3.8s cubic-bezier(0.35, 0.05, 0.25, 0.95) infinite;
+}
+
+.svg-chest-legs {
+  transform-origin: 100px 178px;
+  animation: chestLegsStance 3.8s cubic-bezier(0.35, 0.05, 0.25, 0.95) infinite;
+}
+
+.svg-chest-center-pulse {
+  transform-origin: 100px 80px;
+  animation: chestCenterPulse 3.8s ease-in-out infinite;
+}
+
+.svg-chest-arc {
+  animation: chestArcExpand 3.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.svg-chest-arc-left {
+  transform-origin: 52px 78px;
+}
+
+.svg-chest-arc-right {
+  transform-origin: 148px 78px;
+}
+
+.svg-chest-sparkle {
+  animation: chestSparkleGlow 3.8s ease-in-out infinite;
+}
+
+.svg-chest-sparkle-l {
+  transform-origin: 18px 68px;
+}
+
+.svg-chest-sparkle-r {
+  transform-origin: 182px 68px;
+}
+
+/* 左大臂（肩关节） */
+@keyframes chestUpperL {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  /* 第一次：屈臂向后振动 */
+  14%, 26% {
+    transform: rotate(-24deg);
+  }
+  34% {
+    transform: rotate(-4deg);
+  }
+  /* 第二次：大展臂向后充分扩胸 */
+  48%, 70% {
+    transform: rotate(-14deg);
+  }
+  86% {
+    transform: rotate(-3deg);
+  }
+}
+
+/* 左前臂（肘关节）- 核心：从折叠指向胸前，顺滑展开为水平直线 */
+@keyframes chestForeL {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  /* 屈臂振动时，前臂紧贴胸前 */
+  14%, 26% {
+    transform: rotate(6deg);
+  }
+  34% {
+    transform: rotate(2deg);
+  }
+  /* 大展臂时，小臂顺时针展开 172 度，与大臂平齐向左展直！ */
+  48%, 70% {
+    transform: rotate(172deg);
+  }
+  86% {
+    transform: rotate(20deg);
+  }
+}
+
+/* 右大臂（肩关节） */
+@keyframes chestUpperR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  /* 第一次：屈臂向后振动 */
+  14%, 26% {
+    transform: rotate(24deg);
+  }
+  34% {
+    transform: rotate(4deg);
+  }
+  /* 第二次：大展臂向后充分扩胸 */
+  48%, 70% {
+    transform: rotate(14deg);
+  }
+  86% {
+    transform: rotate(3deg);
+  }
+}
+
+/* 右前臂（肘关节）- 核心：从折叠指向胸前，逆时针展开为水平直线 */
+@keyframes chestForeR {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  /* 屈臂振动时，前臂紧贴胸前 */
+  14%, 26% {
+    transform: rotate(-6deg);
+  }
+  34% {
+    transform: rotate(-2deg);
+  }
+  /* 大展臂时，小臂逆时针展开 -172 度，与大臂平齐向右展直！ */
+  48%, 70% {
+    transform: rotate(-172deg);
+  }
+  86% {
+    transform: rotate(-20deg);
+  }
+}
+
+@keyframes chestBodyBreathe {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  14%, 26% {
+    /* 第一次挺胸 */
+    transform: translateY(-2px) scaleY(1.02);
+  }
+  34% {
+    transform: translateY(-1px) scaleY(1.01);
+  }
+  48%, 70% {
+    /* 第二次深吸气大挺胸 */
+    transform: translateY(-4px) scaleY(1.05);
+  }
+  86% {
+    transform: translateY(-1px) scaleY(1.01);
+  }
+}
+
+@keyframes chestLegsStance {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  14%, 26% {
+    transform: translateY(-1px);
+  }
+  48%, 70% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes chestCenterPulse {
+  0%, 10%, 90%, 100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  14%, 26% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  34% {
+    opacity: 0.15;
+    transform: scale(0.6);
+  }
+  48%, 70% {
+    opacity: 0.8;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes chestArcExpand {
+  0%, 10%, 90%, 100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  14%, 26% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+  48%, 70% {
+    opacity: 0.85;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes chestSparkleGlow {
+  0%, 42%, 78%, 100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  48%, 70% {
+    opacity: 1;
+    transform: scale(1.2) rotate(45deg);
+  }
+}
+
 
 /* --- Water Icon Animations (Wave, Drops, Bubbles) --- */
 .svg-water-wave {
@@ -1179,45 +1542,77 @@ html.overlay-window body {
   border-radius: 22px; /* 与 timer-card 一致的 22px 圆角 */
   border: 1px solid var(--accent);
   box-shadow: none;
-  padding: 20px 24px 16px;
-  gap: 8px;
+  padding: 16px 20px 14px;
+  gap: 6px;
   box-sizing: border-box;
   overflow: hidden;
+  justify-content: space-between;
+}
+
+.overlay-compact .overlay-icon {
+  margin-top: 2px;
+  flex-shrink: 0;
 }
 
 .overlay-compact .overlay-svg-icon {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
 }
 
-.overlay-compact .overlay-card h2 {
-  font-size: 20px;
+.overlay-compact .overlay-card h2,
+.overlay-compact .overlay-title {
+  font-size: 18px;
+  font-weight: 700;
   margin: 0;
+  line-height: 1.25;
+  flex-shrink: 0;
 }
 
-.overlay-compact .overlay-card p {
-  font-size: 13px;
+.overlay-compact .overlay-body {
+  font-size: 12px;
   margin: 0;
   line-height: 1.45;
+  color: var(--text-dim);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  flex-shrink: 0;
+  max-height: 2.9em;
 }
 
 .overlay-compact .overlay-countdown {
-  font-size: 38px;
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 800;
 }
 
 .overlay-compact .overlay-force-status {
   gap: 2px;
-  margin-top: 2px;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+.overlay-compact .overlay-force-hint {
+  font-size: 12px;
+  line-height: 1.2;
 }
 
 .overlay-compact .overlay-actions {
   margin-top: auto;
   width: 100%;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.overlay-compact .overlay-actions .btn-primary,
+.overlay-compact .overlay-actions .btn-ghost {
+  padding: 8px 16px;
+  font-size: 13px;
+  min-height: 34px;
 }
 
 /* Settings panel */

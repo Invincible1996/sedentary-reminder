@@ -113,9 +113,9 @@ async function createOne(
       w = mW;
       h = mH;
     } else {
-      // 小尺寸弹窗定位
+      // 小尺寸弹窗定位 (增加高度以完美兼容 Windows DPI 与字体渲染)
       w = 400;
-      h = 260;
+      h = 285;
       x = mX + (mW - w) / 2;
       y = mY + (mH - h) / 2;
 

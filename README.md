@@ -1,4 +1,4 @@
-# 🧘 sedentary-reminder (久坐提醒) `v1.0.8`
+# 🧘 sedentary-reminder (久坐提醒) `v1.0.9`
 
 基于 **Tauri v2** + **React** + **TypeScript** 倾力打造的健康看护桌面管家，UI 样式采用 **纯原生 CSS (Vanilla CSS)** 极限雕琢，极致轻量，极速启动。
 
